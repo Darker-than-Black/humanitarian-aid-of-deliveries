@@ -1,0 +1,13 @@
+<div class="source">
+  <select
+    #input
+    [(ngModel)]="source"
+    class="p-inputtext p-component p-element w-full p-filled source__select"
+    (keydown.enter)="save()"
+    (focusout)="save()"
+  >
+    <option *ngFor="let item of store.sources" [value]="item">{{ item }}</option>
+  </select>
+
+  <div class="source__arrow"></div>
+</div>

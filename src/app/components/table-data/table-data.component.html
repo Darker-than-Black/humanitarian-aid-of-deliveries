@@ -1,0 +1,20 @@
+<div class="table-data__item">
+  <span class="table-data__column-title">
+    {{ config.header }}
+  </span>
+
+  <ng-template editorType></ng-template>
+
+  <div
+    *ngIf="!showEditor"
+    [className]="config.editType ? 'editable' : ''"
+    (click)="setEditorComponent()"
+  >
+    <ng-container
+      *ngTemplateOutlet="template || defaultTemplate; context: { $implicit: previewData }"
+    ></ng-container>
+  </div>
+</div>
+
+
+<ng-template #defaultTemplate>{{ previewData }}</ng-template>

@@ -1,0 +1,39 @@
+.goods-table {
+  //&__wrapper {
+  //  width: 100%;
+  //  overflow-x: auto;
+  //}
+
+  &__column-title {
+    display: none;
+  }
+
+  &__input {
+    min-width: 15rem;
+  }
+
+  &__search {
+    position: sticky;
+    left: 1em;
+  }
+
+  &__row {
+    &:nth-child(even) {
+      @media screen and (max-width: 960px) {
+        background: var(--gray-50);
+      }
+    }
+  }
+
+  &__td {
+    @media screen and (max-width: 960px) {
+      padding: 5px !important;
+    }
+  }
+
+  &__btn {
+    @media screen and (max-width: 960px) {
+      font-size: 14px;
+    }
+  }
+}
