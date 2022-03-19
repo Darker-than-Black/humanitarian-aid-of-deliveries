@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
     return this.store.deliveries;
   }
 
-  get medicineList(): { label: string; id: string }[] {
+  get medicineOptions(): { label: string; id: string }[] {
     return this.store.medicineList.map(({name, num_id, group_name, dosage}) => ({
       id: num_id,
       label: `${num_id} / ${name} / ${group_name} / ${dosage}`,
@@ -80,10 +80,14 @@ export class AppComponent implements OnInit {
   }
 
   addDeliver(): void {
-    const {value} = this.deliverForm;
+    const data = {...this.deliverForm.value, ...this.medicineFromData};
 
     this.loading = true;
-    this.apiService.addDeliver({...value, ...this.medicineFromData}).subscribe(() => {
+    this.apiService.addDeliver(data).subscribe(() => {
+      if (this.selectedTab === TAB_TYPES.CREATE) {
+        this.store.addMedicineItem(this.medicineFromData as ListItem);
+      }
+
       this.loading = false;
       this.showDialog = false;
       this.medicineForm.reset();

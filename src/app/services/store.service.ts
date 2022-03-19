@@ -47,4 +47,8 @@ export class StoreService {
   setMedicineList(data: ListItem[]): void {
     this.data.medicineList = data;
   }
+
+  addMedicineItem(item: ListItem): void {
+    this.data.medicineList.push(item);
+  }
 }
