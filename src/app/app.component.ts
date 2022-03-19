@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
+import { DeliverItem, ListItem } from './types';
 import { ApiService } from './services/api.service';
-import { DeliverItem } from './types';
 import { StoreService } from './services/store.service';
+import { lastElOfArray, createNumIdOfListItem } from './utils';
+
+const TAB_TYPES = {
+  CHANGE: 'CHANGE',
+  CREATE: 'CREATE',
+};
 
 @Component({
   selector: 'app-root',
@@ -17,13 +23,21 @@ export class AppComponent implements OnInit {
     private fb: FormBuilder,
   ) {}
 
+  tabTypes = TAB_TYPES;
+  selectedTab: string = TAB_TYPES.CHANGE;
   loading: boolean = false;
   showDialog: boolean = false;
-  newDeliverForm = this.fb.group({
+
+  medicineSelect: string = '';
+  medicineForm = this.fb.group({
+    group_name: ['', Validators.required],
+    name: ['', Validators.required],
+    dosage: ['', Validators.required],
+  });
+  deliverForm = this.fb.group({
     supply_date: ['', Validators.required],
     source: ['', Validators.required],
     quantity: ['', Validators.required],
-    medicine: ['', Validators.required],
     comment: [''],
   });
 
@@ -38,6 +52,25 @@ export class AppComponent implements OnInit {
     }));
   }
 
+  get medicineFromData(): ListItem | undefined {
+    if (this.tabTypes.CHANGE === this.selectedTab) {
+      return this.store.medicineList.find(({num_id}) => num_id === this.medicineSelect);
+    }
+
+    const { num_id: id }: ListItem = lastElOfArray<ListItem>(this.store.medicineList);
+    return {
+      num_id: createNumIdOfListItem(id),
+      ...this.medicineForm.value,
+    };
+  }
+
+  get hasDisableBtn(): boolean {
+    const medicineValid = this.tabTypes.CHANGE === this.selectedTab
+      ? Boolean(this.medicineSelect) : this.medicineForm.valid;
+
+    return !(this.deliverForm.valid && medicineValid) || this.loading;
+  }
+
   ngOnInit() {
     this.loading = true;
 
@@ -47,13 +80,15 @@ export class AppComponent implements OnInit {
   }
 
   addDeliver(): void {
-    const {value} = this.newDeliverForm;
-    const medicineItem = this.store.medicineList.find(({num_id}) => num_id === value.medicine);
+    const {value} = this.deliverForm;
 
     this.loading = true;
-    this.apiService.addDeliver({...value, ...medicineItem}).subscribe(() => {
+    this.apiService.addDeliver({...value, ...this.medicineFromData}).subscribe(() => {
       this.loading = false;
       this.showDialog = false;
+      this.medicineForm.reset();
+      this.deliverForm.reset();
+      this.medicineSelect = '';
     });
   }
 }
