@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 
@@ -24,7 +24,8 @@ export class ApiService {
   };
 
   getDeliveries(): Observable<void> {
-    return this.http.get<DeliveriesServerResponse>(ROUTES.GET_DELIVERIES).pipe(
+    const url = this.addDevMode(ROUTES.GET_DELIVERIES);
+    return this.http.get<DeliveriesServerResponse>(url).pipe(
       map(({ data, list, sources }) => {
         this.store.setMedicineList(list);
         this.store.setSourcesList(sources);
@@ -40,23 +41,25 @@ export class ApiService {
       return of(undefined);
     }
 
-    return this.http.post<ServerResponse<DeliverItem>>(ROUTES.UPDATE_DELIVER, data, this.httpOptions).pipe(
-      map(({data}) => {
-        this.store.updateDeliver(data);
-      }),
+    const url = this.addDevMode(ROUTES.UPDATE_DELIVER);
+    return this.http.post<ServerResponse<DeliverItem>>(url, data, this.httpOptions).pipe(
+      map(({data}) => this.store.updateDeliver(data)),
       tap(() => this.notification.add(notificationMessages.fieldSuccess, NOTIFICATION_TYPES.SUCCESS)),
       catchError(this.handleError<any>(notificationMessages.updateError, 'updateDeliver', undefined)),
     );
   }
 
   addDeliver(data: DeliverItemForm): Observable<DeliverItem> {
-    return this.http.post<ServerResponse<DeliverItem>>(ROUTES.ADD_DELIVER, data, this.httpOptions).pipe(
-      map(({data}) => {
-        this.store.addDeliver(data)
-      }),
+    const url = this.addDevMode(ROUTES.ADD_DELIVER);
+    return this.http.post<ServerResponse<DeliverItem>>(url, data, this.httpOptions).pipe(
+      map(({data}) => this.store.addDeliver(data)),
       tap(() => this.notification.add(notificationMessages.updateSuccess, NOTIFICATION_TYPES.SUCCESS)),
       catchError(this.handleError<any>(notificationMessages.updateError, 'addDeliver', undefined)),
     );
+  }
+
+  private addDevMode(url: string): string {
+    return isDevMode() ? `${url}&dev=1` : url;
   }
 
   private handleError<T>(message: string, operation = 'operation', result?: T) {

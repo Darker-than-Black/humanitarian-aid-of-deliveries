@@ -13,5 +13,5 @@ export const lastElOfArray = <T>(array: T[]): T => {
 export const createNumIdOfListItem = (idStr: string) => {
   const MAX_ITEM_DEFAULT_ID = 10000;
   let id = Number(idStr);
-  return id < MAX_ITEM_DEFAULT_ID ? MAX_ITEM_DEFAULT_ID : id++;
+  return id < MAX_ITEM_DEFAULT_ID ? MAX_ITEM_DEFAULT_ID : ++id;
 };
