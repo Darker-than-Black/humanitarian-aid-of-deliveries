@@ -40,6 +40,10 @@ export class StoreService {
     this.data.deliveries.unshift(deliver);
   }
 
+  deleteDeliver(deliver: DeliverItem): void {
+    this.data.deliveries = this.data.deliveries.filter(({id}) => id !== deliver.id);
+  }
+
   setSourcesList(data: string[]): void {
     this.data.sources = data;
   }

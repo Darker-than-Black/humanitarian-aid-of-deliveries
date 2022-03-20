@@ -4,6 +4,7 @@ import { EDITOR_TYPES } from './configs/editorTypes';
 export interface TableColumnConfig {
   field: string
   header: string
+  filterable?: boolean
   editType?: EDITOR_TYPES
   handler?: (data: any) => any
 }

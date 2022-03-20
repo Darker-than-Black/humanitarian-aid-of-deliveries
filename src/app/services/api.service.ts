@@ -49,12 +49,21 @@ export class ApiService {
     );
   }
 
-  addDeliver(data: DeliverItemForm): Observable<DeliverItem> {
+  addDeliver(data: DeliverItemForm): Observable<void> {
     const url = this.addDevMode(ROUTES.ADD_DELIVER);
     return this.http.post<ServerResponse<DeliverItem>>(url, data, this.httpOptions).pipe(
       map(({data}) => this.store.addDeliver(data)),
       tap(() => this.notification.add(notificationMessages.updateSuccess, NOTIFICATION_TYPES.SUCCESS)),
       catchError(this.handleError<any>(notificationMessages.updateError, 'addDeliver', undefined)),
+    );
+  }
+
+  deleteDeliver(data: DeliverItem): Observable<void> {
+    const url = this.addDevMode(ROUTES.DELETE_DELIVER);
+    return this.http.post<ServerResponse<DeliverItem>>(url, data, this.httpOptions).pipe(
+      map(({data}) => this.store.deleteDeliver(data)),
+      tap(() => this.notification.add(notificationMessages.deleteSuccess, NOTIFICATION_TYPES.SUCCESS)),
+      catchError(this.handleError<any>(notificationMessages.updateError, 'deleteDeliver', undefined)),
     );
   }
 

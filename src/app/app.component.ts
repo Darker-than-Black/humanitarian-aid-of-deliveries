@@ -5,6 +5,7 @@ import { DeliverItem, ListItem } from './types';
 import { ApiService } from './services/api.service';
 import { StoreService } from './services/store.service';
 import { lastElOfArray, createNumIdOfListItem } from './utils';
+import { NotificationService } from './services/notification.service';
 
 const TAB_TYPES = {
   CHANGE: 'CHANGE',
@@ -18,11 +19,13 @@ const TAB_TYPES = {
 })
 export class AppComponent implements OnInit {
   constructor(
+    public notification: NotificationService,
     public store: StoreService,
     private apiService: ApiService,
     private fb: FormBuilder,
   ) {}
 
+  deleteItem?: DeliverItem;
   tabTypes = TAB_TYPES;
   selectedTab: string = TAB_TYPES.CHANGE;
   loading: boolean = false;
@@ -93,6 +96,18 @@ export class AppComponent implements OnInit {
       this.medicineForm.reset();
       this.deliverForm.reset();
       this.medicineSelect = '';
+    });
+  }
+
+  onDeleteItem(event: DeliverItem): void {
+    this.deleteItem = event;
+    this.notification.addConfirmOfDeleteItem(`№${event.id} ${event.name}`);
+  }
+
+  onConfirmToDelete() {
+    this.apiService.deleteDeliver(this.deleteItem as DeliverItem).subscribe(() => {
+      this.deleteItem = undefined;
+      this.notification.clearConfirmModal();
     });
   }
 }

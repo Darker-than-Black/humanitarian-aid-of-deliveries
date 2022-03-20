@@ -1,1 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+.goods-table .p-datatable-wrapper {
+  @media screen and (min-width: 960px) {
+    overflow-x: scroll;
+  }
+}

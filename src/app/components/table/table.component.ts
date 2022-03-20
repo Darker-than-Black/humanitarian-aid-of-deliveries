@@ -12,10 +12,13 @@ export class TableComponent {
   @Input() data: DeliverItem[] = [];
   @Input() loading: boolean = false;
   @Output() openModal = new EventEmitter<void>();
+  @Output() deleteItem = new EventEmitter<DeliverItem>();
 
   columns: TableColumnConfig[] = TABLE_CONFIG;
 
   get fieldsOfColumns(): string[] {
-    return this.columns.map(({field}) => field);
+    return this.columns
+      .filter(({ filterable }) => filterable)
+      .map(({field}) => field);
   }
 }
