@@ -2,6 +2,9 @@ import { Injectable, isDevMode } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 
+import { MedTableService } from 'med-table';
+
+import { SelectData } from './select-data';
 import * as ROUTES from '../configs/apiRoutes';
 import { StoreService } from './store.service';
 import { NotificationService } from './notification.service';
@@ -17,6 +20,7 @@ export class ApiService {
     private http: HttpClient,
     private store: StoreService,
     private notification: NotificationService,
+    private tableService: MedTableService,
   ) {}
 
   private httpOptions = {
@@ -27,8 +31,8 @@ export class ApiService {
     const url = this.addDevMode(ROUTES.GET_DELIVERIES);
     return this.http.get<DeliveriesServerResponse>(url).pipe(
       map(({ data, list, sources }) => {
+        this.tableService.setSelectData(SelectData.source(sources), 'source');
         this.store.setMedicineList(list);
-        this.store.setSourcesList(sources);
         this.store.setDeliveries(data);
       }),
       catchError(this.handleError<void>(notificationMessages.serverError, 'getDeliveries')),

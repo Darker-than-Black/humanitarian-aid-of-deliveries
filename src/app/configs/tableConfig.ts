@@ -1,55 +1,56 @@
-import { TableColumnConfig } from '../types';
+import { FIELD_TYPES, MedTableColumnConfig } from 'med-table';
 import { formatDate } from '../utils';
-import { EDITOR_TYPES } from './editorTypes';
 
-export const TABLE_CONFIG: TableColumnConfig[] = [
+export const TABLE_CONFIG: MedTableColumnConfig[] = [
   {
-    header: '№',
-    field: 'num_id',
+    label: '№',
+    key: 'num_id',
     filterable: true,
   },
   {
-    header: 'Назва',
-    field: 'name',
+    label: 'Назва',
+    key: 'name',
     filterable: true,
   },
   {
-    header: 'Дата поставки',
-    field: 'supply_date',
-    editType: EDITOR_TYPES.SUPPLY_DATE,
-    handler: (date: string) => formatDate(date),
+    label: 'Дата поставки',
+    key: 'supply_date',
+    editorType: FIELD_TYPES.DATE,
+    viewHandler: (date: string) => formatDate(date),
     filterable: true,
   },
   {
-    header: 'Група',
-    field: 'group_name',
+    label: 'Група',
+    key: 'group_name',
     filterable: true,
   },
   {
-    header: 'Одиниця виміру',
-    field: 'dosage',
+    label: 'Одиниця виміру',
+    key: 'dosage',
     filterable: true,
   },
   {
-    header: 'Кількість',
-    field: 'quantity',
-    editType: EDITOR_TYPES.QUANTITY,
+    label: 'Кількість',
+    key: 'quantity',
+    editorType: FIELD_TYPES.NUMBER,
     filterable: true,
   },
   {
-    header: 'Джерело поставки',
-    field: 'source',
-    editType: EDITOR_TYPES.SOURCE,
+    label: 'Джерело поставки',
+    key: 'source',
+    editorType: FIELD_TYPES.SELECT,
     filterable: true,
   },
   {
-    header: 'Коментар',
-    field: 'comment',
-    editType: EDITOR_TYPES.COMMENT,
+    label: 'Коментар',
+    key: 'comment',
+    editorType: FIELD_TYPES.TEXTAREA,
     filterable: true,
   },
   {
-    header: '',
-    field: 'delete',
+    label: '',
+    key: 'delete',
+    defaultValue: '',
+    hideExport: true,
   },
 ];

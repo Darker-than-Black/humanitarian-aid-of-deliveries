@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MedTableSettings, MedUpdateColumnEvent } from 'med-table';
 
 import { DeliverItem, ListItem } from './types';
 import { ApiService } from './services/api.service';
 import { StoreService } from './services/store.service';
-import { lastElOfArray, createNumIdOfListItem } from './utils';
 import { NotificationService } from './services/notification.service';
+import { lastElOfArray, createNumIdOfListItem } from './utils';
+import {TABLE_CONFIG} from "./configs/tableConfig";
 
 const TAB_TYPES = {
   CHANGE: 'CHANGE',
@@ -25,6 +27,11 @@ export class AppComponent implements OnInit {
     private fb: FormBuilder,
   ) {}
 
+  tableConfig = TABLE_CONFIG;
+  tableSettings: MedTableSettings = {
+    export: true,
+    exportFileName: 'Облік поставок',
+  };
   deleteItem?: DeliverItem;
   tabTypes = TAB_TYPES;
   selectedTab: string = TAB_TYPES.CHANGE;
@@ -78,6 +85,14 @@ export class AppComponent implements OnInit {
     this.loading = true;
 
     this.apiService.getDeliveries().subscribe(() => {
+      this.loading = false;
+    });
+  }
+
+  onUpdateColumn({ item }: MedUpdateColumnEvent<DeliverItem>): void {
+    this.loading = true;
+
+    this.apiService.updateDeliver(item).subscribe(() => {
       this.loading = false;
     });
   }

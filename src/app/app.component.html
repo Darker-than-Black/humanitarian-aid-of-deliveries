@@ -1,9 +1,32 @@
-<app-table
+<med-table
   [data]="data"
   [loading]="loading"
-  (openModal)="showDialog = true"
-  (deleteItem)="onDeleteItem($event)"
-></app-table>
+  [config]="tableConfig"
+  [settings]="tableSettings"
+  [tableDataTemplate]="tableDataTemplate"
+  [toolbarTemplate]="toolbarTemplate"
+  (updateColumn)="onUpdateColumn($event)"
+>
+  <ng-template #tableDataTemplate let-data let-item="item" let-config="config">
+    <ng-container [ngSwitch]="config.key">
+      <button
+        *ngSwitchCase="'delete'"
+        pButton
+        pRipple
+        type="button"
+        icon="pi pi-times"
+        class="p-button-rounded p-button-danger"
+        (click)="onDeleteItem(item)"
+      ></button>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #toolbarTemplate>
+    <p-button (click)="showDialog = true" styleClass="md:ml-5 mt-2 md:mt-0">
+      Додати поставку
+    </p-button>
+  </ng-template>
+</med-table>
 
 <p-dialog
   [(visible)]="showDialog"

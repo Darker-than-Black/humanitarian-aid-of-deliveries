@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MedTableModule } from 'med-table';
+
 import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { MessageService } from 'primeng/api';
@@ -18,27 +20,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { AppComponent } from './app.component';
 import { TabComponent } from './components/tabs/tab/tab.component';
-import { TableComponent } from './components/table/table.component';
 import { TabsComponent } from './components/tabs/tabs/tabs.component';
-import { EditorTypeDirective } from './directives/editor-type.directive';
-import { TableDataComponent } from './components/table-data/table-data.component';
-import { SourceEditorComponent } from './components/editors/source-editor/source-editor.component';
-import { CommentEditorComponent } from './components/editors/comment-editor/comment-editor.component';
-import { QuantityEditorComponent } from './components/editors/quantity-editor/quantity-editor.component';
-import { SupplyDateEditorComponent } from './components/editors/supply-date-editor/supply-date-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TabComponent,
     TabsComponent,
-    TableComponent,
-    TableDataComponent,
-    EditorTypeDirective,
-    SourceEditorComponent,
-    CommentEditorComponent,
-    QuantityEditorComponent,
-    SupplyDateEditorComponent,
   ],
   imports: [
     FormsModule,
@@ -50,6 +38,7 @@ import { SupplyDateEditorComponent } from './components/editors/supply-date-edit
     BrowserModule,
     DropdownModule,
     CalendarModule,
+    MedTableModule,
     InputTextModule,
     HttpClientModule,
     ReactiveFormsModule,
