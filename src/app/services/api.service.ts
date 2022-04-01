@@ -32,6 +32,7 @@ export class ApiService {
     return this.http.get<DeliveriesServerResponse>(url).pipe(
       map(({ data, list, sources }) => {
         this.tableService.setSelectData(SelectData.source(sources), 'source');
+        this.store.setSourcesList(sources);
         this.store.setMedicineList(list);
         this.store.setDeliveries(data);
       }),
