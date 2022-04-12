@@ -40,15 +40,10 @@ export class ApiService {
     );
   }
 
-  updateDeliver(data?: DeliverItem): Observable<DeliverItem | undefined> {
-    if (data === undefined) {
-      this.notification.add(notificationMessages.fieldError, NOTIFICATION_TYPES.ERROR);
-      return of(undefined);
-    }
-
+  updateDeliver(data: DeliverItem, key: string): Observable<DeliverItem | undefined> {
     const url = this.addDevMode(ROUTES.UPDATE_DELIVER);
     return this.http.post<ServerResponse<DeliverItem>>(url, data, this.httpOptions).pipe(
-      map(({data}) => this.store.updateDeliver(data)),
+      map(({data}) => this.store.updateDeliver(data, key)),
       tap(() => this.notification.add(notificationMessages.fieldSuccess, NOTIFICATION_TYPES.SUCCESS)),
       catchError(this.handleError<any>(notificationMessages.updateError, 'updateDeliver', undefined)),
     );

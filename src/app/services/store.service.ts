@@ -1,3 +1,4 @@
+import { set, get } from 'lodash';
 import { Injectable } from '@angular/core';
 import { DeliverItem, ListItem } from '../types';
 
@@ -31,9 +32,12 @@ export class StoreService {
     this.data.deliveries = data;
   }
 
-  updateDeliver(deliver: DeliverItem): void {
-    this.data.deliveries = this.data.deliveries
-      .map(item => deliver.id === item.id ? deliver : item);
+  updateDeliver(deliver: DeliverItem, key: string): void {
+    this.data.deliveries.forEach(el => {
+      if (el['id'] === deliver['id']) {
+        set(el, key, get(deliver, key));
+      }
+    });
   }
 
   addDeliver(deliver: DeliverItem): void {

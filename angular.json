@@ -37,7 +37,10 @@
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "xlsx-js-style"
+            ]
           },
           "configurations": {
             "production": {

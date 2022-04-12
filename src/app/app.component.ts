@@ -51,10 +51,6 @@ export class AppComponent implements OnInit {
     comment: [''],
   });
 
-  get data(): DeliverItem[] {
-    return this.store.deliveries;
-  }
-
   get medicineOptions(): { label: string; id: string }[] {
     return this.store.medicineList.map(({name, num_id, group_name, dosage}) => ({
       id: num_id,
@@ -89,10 +85,10 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onUpdateColumn({ item }: MedUpdateColumnEvent<DeliverItem>): void {
+  onUpdateColumn({ item, key }: MedUpdateColumnEvent<DeliverItem>): void {
     this.loading = true;
 
-    this.apiService.updateDeliver(item).subscribe(() => {
+    this.apiService.updateDeliver(item, key).subscribe(() => {
       this.loading = false;
     });
   }
